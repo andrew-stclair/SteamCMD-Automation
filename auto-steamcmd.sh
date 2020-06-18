@@ -58,14 +58,6 @@ then
 	exit
 fi
 
-if [ -z $app_exe ] 
-then
-	echo "$red[*] The server executable can not be blank!!"
-	echo "[*] The scipt is now terminated! Please re-run the scipt and specify the server executable!"
-	echo $normal_color
-	exit
-fi
-
 #CREATE TEMP DIRECTORY
 echo "$process[>>] Creating /tmp/steamcmd Directory... $red"
 mkdir -p /tmp/steamcmd
@@ -147,7 +139,7 @@ $done
 echo ""
 
 #CHANСHING PERMISIONS --------------------------------------------------------------------------
-echo "$process[>>] Changing file permisions... (FILES: ~/start_$install_dir.sh, ~/updater/$install_dir.txt  > TO >  'chmod +x')"
+echo "$process[>>] Changing file permisions... (FILES: /start_$app_id.sh, /update-$app_id.txt  > TO >  'chmod +x')"
 chmod +x /start_$app_id.sh
 chmod +x /update-$app_id.txt
 $done
@@ -155,6 +147,6 @@ echo ""
 
 #DOWNLOADING SERVER FROM STEAM --------------------------------------------------------------------------
 echo "$process[>>] Starting the Installation Process... $normal_color"
-sh ~/steamcmd.sh +login $username $password +force_install_dir $install_dir +app_update $app_id validate +quit
+~/steamcmd.sh +login $username $password +force_install_dir $install_dir +app_update $app_id validate +quit
 echo "$green[*] The server was successfully downloaded! $normal_color"
 echo ""
