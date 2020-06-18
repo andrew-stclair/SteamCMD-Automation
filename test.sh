@@ -3,12 +3,10 @@
 # Set variables
 pwd=$(pwd)
 upperdir=${pwd}/testresults
-workdir=/tmp/workdir
+workdir=${pwd}/workdir
 testroot=${pwd}/testroot
 
 # Clean and setup testing directories
-sudo rm -rf $upperdir
-sudo rm -rf $workdir
 sudo rm -rf $testroot
 mkdir -p $upperdir
 mkdir -p $workdir
@@ -26,3 +24,7 @@ sudo umount -t fuse-overlayfs $testroot
 
 # Display results
 echo "Results can be found in $upperdir"
+
+# Cleanup
+sudo rm -rf $upperdir
+sudo rm -rf $workdir
