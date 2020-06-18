@@ -32,7 +32,7 @@ echo $cyan
 echo "Starting Auto-SteamCMD"
 echo $normal_color
 
-echo "$process[>>] Please wait untill we install needed packages ('lib32gcc1' and 'dpkg --add-architecture i386'), this may require your password!$normal_color"
+echo "$process[>>] Please wait while required packages are installed ('lib32gcc1' and 'dpkg --add-architecture i386'), this may require your password!$normal_color"
 sudo apt-get update
 echo "$green[>>] Running:$cyan sudo dpkg --add-architecture i386 $normal_color"
 sudo dpkg --add-architecture i386
@@ -44,7 +44,7 @@ echo $normal_color
 
 if [ -z $install_dir ] 
 then
-	echo "$red[*] The directory can not be empty!!"
+	echo "$red[*] The directory can not be blank!!"
 	echo "[*] The scipt is now terminated! Please re-run the scipt and specify the directory!"
 	echo $normal_color
 	exit
@@ -52,7 +52,7 @@ fi
 
 if [ -z $app_id ] 
 then
-	echo "$red[*] The server id can not be empty!!"
+	echo "$red[*] The server id can not be blank!!"
 	echo "[*] The scipt is now terminated! Please re-run the scipt and specify the server id!"
 	echo $normal_color
 	exit
@@ -60,7 +60,7 @@ fi
 
 if [ -z $app_exe ] 
 then
-	echo "$red[*] The server executable can not be empty!!"
+	echo "$red[*] The server executable can not be blank!!"
 	echo "[*] The scipt is now terminated! Please re-run the scipt and specify the server executable!"
 	echo $normal_color
 	exit
