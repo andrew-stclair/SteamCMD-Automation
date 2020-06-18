@@ -104,7 +104,7 @@ echo "$green[*] Temp files removed! $normal_color"
 echo ""
 
 echo "$process[>>] Setting up your server's directory... $red"
-mkdir $install_dir
+mkdir -p $install_dir
 chmod +x $install_dir
 echo "$green[*] Your new server's directory is '$install_dir'"
 echo "[*] '$install_dir' - is case sensitive! $normal_color"
