@@ -4,7 +4,7 @@ A Linux Script to automate the process of installing and updating SteamCMD serve
 # Installation
 setup an amazon EC2 instance with the official ubuntu image
 
-set the User Data to the following:
+set the User Data to the following, editing the vars for the server you want:
 
 ```
 #!/bin/bash
