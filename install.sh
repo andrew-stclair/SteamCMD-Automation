@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Variables
-username="anonymous"
-password=""
-install_dir=""
-app_id=""
-app_exe=""
-steamCmd_web_location="http://media.steampowered.com/client/steamcmd_linux.tar.gz"
-
 # Make sure we are running as root
 if [ "$EUID" -ne 0 ]
 	then echo "Please run as root"
