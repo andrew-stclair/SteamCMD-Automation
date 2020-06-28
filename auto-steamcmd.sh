@@ -38,7 +38,6 @@ app_update ${app_id} validate
 quit
 " > /update-${app_id}.txt
 
-
 # Create start script
 echo "#!/bin/bash
 cd ${install_dir}
