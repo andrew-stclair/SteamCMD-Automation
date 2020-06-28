@@ -8,10 +8,16 @@ app_id=""
 app_exe=""
 steamCmd_web_location="http://media.steampowered.com/client/steamcmd_linux.tar.gz"
 
+# Make sure we are running as root
+if [ "$EUID" -ne 0 ]
+	then echo "Please run as root"
+	exit
+fi
+
 # Update required software
-sudo dpkg --add-architecture i386
-sudo apt-get update
-sudo apt install lib32gcc1 -y
+dpkg --add-architecture i386
+apt-get update
+apt install lib32gcc1 -y
 
 # Create temp directory
 mkdir -p /tmp/steamcmd
@@ -50,14 +56,52 @@ ${app_exe}
 echo "#!/bin/bash
 cd ${install_dir}
 
+# Make sure we are running as root
+if [ "$EUID" -ne 0 ]
+	then echo \"Please run as root\"
+	exit
+fi
+
+# Stop service
+systemctl stop srcds-${app_id}
+
 # Update Server
 ${HOME}/steamcmd.sh +runscript /update-${app_id}.txt
+chown -R srcds-${app_id}:srcds-${app_id} ${install_dir}
+
+# Start service
+systemctl start srcds-${app_id}
 " > /update_${app_id}.sh
+
+# Create service user
+useradd -M -U -s /usr/sbin/nologin srcds-${app_id}
+
+# Create and enable systemd service
+echo "[Unit]
+Description=SRCDS-${app_id} Server
+After=network.target
+
+[Service]
+Type=simple
+User=srcds-${app_id}
+Group=srcds-${app_id}
+ExecStart=/start_${app_id}.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
+" > /etc/systemd/system/srcds-${app_id}.service
+systemctl daemon-reload
+systemctl enable srcds-${app_id}
 
 # Fix permissions
 chmod +x /start_${app_id}.sh
 chmod +x /update_${app_id}.sh
 chmod +x /update-${app_id}.txt
+chown -R srcds-${app_id}:srcds-${app_id} ${install_dir}
 
 # Download server files from steam
 ~/steamcmd.sh +runscript /update-${app_id}.txt
+
+# Start Server
+systemctl start srcds-${app_id}
