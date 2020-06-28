@@ -16,37 +16,37 @@ mkdir -p /tmp/steamcmd
 cd /tmp/steamcmd
 
 # Download and extract latest steamcmd
-wget ${steamCmd_web_location}
+wget ${srcds_steamCmd_web_location}
 tar -xvzf steamcmd_linux.tar.gz
 rm *.tar.gz
 
 # Make install directory
-mkdir -p ${install_dir}
-chmod +x ${install_dir}
+mkdir -p ${srcds_install_dir}
+chmod +x ${srcds_install_dir}
 
 # Move steamcmd to user directory
 mv /tmp/steamcmd/* ~/
 rm -rf /tmp/steamcmd
 
 # Create update file
-echo "//SERVER UPDATER SCTIPT FOR ${install_dir}
-login ${username} ${password}
-force_install_dir ${install_dir}
-app_update ${app_id} validate
+echo "//SERVER UPDATER SCTIPT FOR ${srcds_install_dir}
+login ${srcds_username} ${srcds_password}
+force_install_dir ${srcds_install_dir}
+app_update ${srcds_app_id} validate
 quit
-" > /update-${app_id}.txt
+" > /update-${srcds_app_id}.txt
 
 # Create start script
 echo "#!/bin/bash
-cd ${install_dir}
+cd ${srcds_install_dir}
 
 # Start Server
-${app_exe}
-" > /start_${app_id}.sh
+${srcds_app_exe}
+" > /start_${srcds_app_id}.sh
 
 # Create update script
 echo "#!/bin/bash
-cd ${install_dir}
+cd ${srcds_install_dir}
 
 # Make sure we are running as root
 if [ "$EUID" -ne 0 ]
@@ -55,45 +55,45 @@ if [ "$EUID" -ne 0 ]
 fi
 
 # Stop service
-systemctl stop srcds-${app_id}
+systemctl stop srcds-${srcds_app_id}
 
 # Update Server
-${HOME}/steamcmd.sh +runscript /update-${app_id}.txt
-chown -R srcds-${app_id}:srcds-${app_id} ${install_dir}
+${HOME}/steamcmd.sh +runscript /update-${srcds_app_id}.txt
+chown -R srcds-${srcds_app_id}:srcds-${srcds_app_id} ${srcds_install_dir}
 
 # Start service
-systemctl start srcds-${app_id}
-" > /update_${app_id}.sh
+systemctl start srcds-${srcds_app_id}
+" > /update_${srcds_app_id}.sh
 
 # Create service user
-useradd -M -U -s /usr/sbin/nologin srcds-${app_id}
+useradd -M -U -s /usr/sbin/nologin srcds-${srcds_app_id}
 
 # Create and enable systemd service
 echo "[Unit]
-Description=SRCDS-${app_id} Server
+Description=SRCDS-${srcds_app_id} Server
 After=network.target
 
 [Service]
 Type=simple
-User=srcds-${app_id}
-Group=srcds-${app_id}
-ExecStart=/start_${app_id}.sh
+User=srcds-${srcds_app_id}
+Group=srcds-${srcds_app_id}
+ExecStart=/start_${srcds_app_id}.sh
 TimeoutStartSec=0
 
 [Install]
 WantedBy=default.target
-" > /etc/systemd/system/srcds-${app_id}.service
+" > /etc/systemd/system/srcds-${srcds_app_id}.service
 systemctl daemon-reload
-systemctl enable srcds-${app_id}
+systemctl enable srcds-${srcds_app_id}
 
 # Fix permissions
-chmod +x /start_${app_id}.sh
-chmod +x /update_${app_id}.sh
-chmod +x /update-${app_id}.txt
-chown -R srcds-${app_id}:srcds-${app_id} ${install_dir}
+chmod +x /start_${srcds_app_id}.sh
+chmod +x /update_${srcds_app_id}.sh
+chmod +x /update-${srcds_app_id}.txt
+chown -R srcds-${srcds_app_id}:srcds-${srcds_app_id} ${srcds_install_dir}
 
 # Download server files from steam
-~/steamcmd.sh +runscript /update-${app_id}.txt
+~/steamcmd.sh +runscript /update-${srcds_app_id}.txt
 
 # Start Server
-systemctl start srcds-${app_id}
+systemctl start srcds-${srcds_app_id}
