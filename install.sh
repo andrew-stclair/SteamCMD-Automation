@@ -3,9 +3,9 @@
 # Variables
 username="anonymous"
 password=""
-install_dir=""
-app_id=""
-app_exe=""
+install_dir="/opt/7d2d"
+app_id="294420"
+app_exe="./startserver.sh -configfile=serverconfig.xml"
 steamCmd_web_location="http://media.steampowered.com/client/steamcmd_linux.tar.gz"
 
 # Make sure we are running as root
